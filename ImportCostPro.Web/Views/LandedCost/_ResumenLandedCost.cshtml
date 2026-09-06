@@ -1,0 +1,30 @@
+@model ImportCostPro.Core.Dtos.LandedCostCalculoDto
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <table class="table table-sm">
+            <tbody>
+                <tr><th>Moneda local usada</th><td class="text-end">@Model.MonedaLocal</td></tr>
+                <tr><th>Tasa de cambio usada para la orden</th><td class="text-end">@Model.TasaCambioOrden.ToString("N4")</td></tr>
+                <tr><th>FOB total original (@Model.MonedaOrden)</th><td class="text-end">@Model.FOBTotalOriginal.ToString("N2")</td></tr>
+                <tr><th>FOB total local</th><td class="text-end">@Model.FOBTotalLocal.ToString("N2")</td></tr>
+                <tr><th>Flete total</th><td class="text-end">@Model.FleteTotal.ToString("N2")</td></tr>
+                <tr><th>Seguro total</th><td class="text-end">@Model.SeguroTotal.ToString("N2")</td></tr>
+                <tr><th>CIF total</th><td class="text-end">@Model.CIFTotal.ToString("N2")</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <table class="table table-sm">
+            <tbody>
+                <tr><th>Total arancel</th><td class="text-end">@Model.TotalArancel.ToString("N2")</td></tr>
+                <tr><th>Total impuesto selectivo</th><td class="text-end">@Model.TotalImpuestoSelectivo.ToString("N2")</td></tr>
+                <tr><th>Total tasa servicio aduanal (@Model.PorcentajeTasaServicioAduanal.ToString("N2") %)</th><td class="text-end">@Model.TotalTasaServicioAduanal.ToString("N2")</td></tr>
+                <tr><th>Total ITBIS (@Model.PorcentajeITBIS.ToString("N2") %)</th><td class="text-end">@Model.TotalITBIS.ToString("N2")</td></tr>
+                <tr><th>Total gastos locales</th><td class="text-end">@Model.TotalGastosLocales.ToString("N2")</td></tr>
+                <tr class="table-primary"><th>Costo total de importación</th><td class="text-end fw-bold">@Model.CostoTotalImportacion.ToString("N2") @Model.MonedaLocal</td></tr>
+                <tr><th>Cantidad total importada</th><td class="text-end">@Model.CantidadTotalImportada</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

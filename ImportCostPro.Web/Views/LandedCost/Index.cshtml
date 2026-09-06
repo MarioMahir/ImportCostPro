@@ -1,0 +1,37 @@
+@model ImportCostPro.Web.ViewModels.LandedCostViewModel
+@{
+    ViewData["Title"] = "Cálculo de landed cost";
+}
+
+<h1>Cálculo de landed cost</h1>
+
+<p class="text-muted">
+    Seleccione una orden abierta. El sistema valida la orden, convierte el FOB y los gastos a moneda local,
+    prorratea flete, seguro y gastos locales, y calcula CIF, arancel, impuesto selectivo, tasa de servicio
+    aduanal, ITBIS, costo unitario y precio de venta sugerido de cada producto.
+</p>
+
+@if (!Model.Ordenes.Any())
+{
+    <div class="alert alert-info">
+        No hay órdenes en estado Abierta para calcular.
+        <a asp-controller="OrdenImportacion" asp-action="Create">Crear una orden</a>.
+    </div>
+}
+else
+{
+    <form asp-action="Calcular" class="card p-3" style="max-width: 48rem;">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="OrdenId" class="form-label"></label>
+            <select asp-for="OrdenId" asp-items="Model.Ordenes" class="form-select"></select>
+            <span asp-validation-for="OrdenId" class="text-danger"></span>
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-primary">Calcular landed cost</button>
+            <a asp-controller="OrdenImportacion" asp-action="Index" class="btn btn-secondary">Ver órdenes</a>
+        </div>
+    </form>
+}

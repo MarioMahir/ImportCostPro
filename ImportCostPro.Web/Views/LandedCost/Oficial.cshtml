@@ -1,0 +1,105 @@
+@using ImportCostPro.Core.Enums
+@model ImportCostPro.Core.Entities.ResultadoLandedCost
+@{
+    ViewData["Title"] = "Cálculo oficial";
+    var orden = Model.OrdenImportacion!;
+    var ml = Model.MonedaLocal?.CodigoISO;
+    var mo = orden.Moneda?.CodigoISO;
+    var resumen = new ImportCostPro.Core.Dtos.LandedCostCalculoDto
+    {
+        MonedaLocal = ml ?? string.Empty,
+        MonedaOrden = mo ?? string.Empty,
+        TasaCambioOrden = Model.TasaCambioOrden,
+        PorcentajeITBIS = Model.PorcentajeITBIS,
+        PorcentajeTasaServicioAduanal = Model.PorcentajeTasaServicioAduanal,
+        FOBTotalOriginal = Model.FOBTotalOriginal,
+        FOBTotalLocal = Model.FOBTotalLocal,
+        FleteTotal = Model.FleteTotal,
+        SeguroTotal = Model.SeguroTotal,
+        CIFTotal = Model.CIFTotal,
+        TotalArancel = Model.TotalArancel,
+        TotalImpuestoSelectivo = Model.TotalImpuestoSelectivo,
+        TotalTasaServicioAduanal = Model.TotalTasaServicioAduanal,
+        TotalITBIS = Model.TotalITBIS,
+        TotalGastosLocales = Model.TotalGastosLocales,
+        CostoTotalImportacion = Model.CostoTotalImportacion,
+        CantidadTotalImportada = Model.CantidadTotalImportada
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+        <h1 class="mb-0">Cálculo oficial de landed cost</h1>
+        <p class="text-muted mb-0">
+            Orden #@orden.Id · @orden.Fecha.ToString("dd/MM/yyyy") · @orden.Importador?.Nombre · @orden.Proveedor?.Nombre ·
+            calculado el @Model.FechaCalculo.ToString("dd/MM/yyyy HH:mm")
+        </p>
+    </div>
+    <span class="badge fs-6 @(orden.Estado == EstadoOrden.Cerrada ? "bg-dark" : "bg-success")">Orden @orden.Estado</span>
+</div>
+
+<div class="alert alert-secondary mt-3">
+    Valores guardados en el momento del cálculo: moneda local <strong>@ml</strong>, tasa de cambio <strong>@Model.TasaCambioOrden.ToString("N4")</strong>,
+    ITBIS <strong>@Model.PorcentajeITBIS.ToString("N2") %</strong>, tasa de servicio aduanal <strong>@Model.PorcentajeTasaServicioAduanal.ToString("N2") %</strong>.
+    Cambiar luego la configuración de impuestos, las tasas o las categorías no altera este resultado.
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-sm align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Producto</th>
+                <th class="text-end">Cantidad</th>
+                <th class="text-end">FOB original (@mo)</th>
+                <th class="text-end">FOB local</th>
+                <th class="text-end">Flete asignado</th>
+                <th class="text-end">Seguro asignado</th>
+                <th class="text-end">CIF</th>
+                <th class="text-end">Arancel</th>
+                <th class="text-end">Imp. selectivo</th>
+                <th class="text-end">Tasa serv. aduanal</th>
+                <th class="text-end">ITBIS</th>
+                <th class="text-end">Gastos locales</th>
+                <th class="text-end">Costo total importado</th>
+                <th class="text-end">Costo unitario</th>
+                <th class="text-end">Margen</th>
+                <th class="text-end">Precio sugerido</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.Detalles)
+            {
+                <tr>
+                    <td>@d.Producto?.Nombre</td>
+                    <td class="text-end">@d.Cantidad</td>
+                    <td class="text-end">@d.FOBOriginal.ToString("N2")</td>
+                    <td class="text-end">@d.FOBLocal.ToString("N2")</td>
+                    <td class="text-end">@d.FleteAsignado.ToString("N2")</td>
+                    <td class="text-end">@d.SeguroAsignado.ToString("N2")</td>
+                    <td class="text-end">@d.CIF.ToString("N2")</td>
+                    <td class="text-end">@d.Arancel.ToString("N2") <small class="text-muted">(@d.PorcentajeArancel.ToString("N2") %)</small></td>
+                    <td class="text-end">@d.ImpuestoSelectivo.ToString("N2") @(d.PorcentajeImpuestoSelectivo > 0 ? Html.Raw($"<small class=\"text-muted\">({d.PorcentajeImpuestoSelectivo:N2} %)</small>") : null)</td>
+                    <td class="text-end">@d.TasaServicioAduanal.ToString("N2")</td>
+                    <td class="text-end">@d.ITBIS.ToString("N2")</td>
+                    <td class="text-end">@d.GastosLocalesAsignados.ToString("N2")</td>
+                    <td class="text-end fw-semibold">@d.CostoTotalImportado.ToString("N2")</td>
+                    <td class="text-end fw-semibold">@d.CostoUnitarioImportado.ToString("N2")</td>
+                    <td class="text-end">@d.MargenDeseado.ToString("N2") %</td>
+                    <td class="text-end fw-semibold">@d.PrecioVentaSugerido.ToString("N2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<h2 class="h5 mt-4">Resumen general</h2>
+<partial name="_ResumenLandedCost" model="resumen" />
+
+<div class="mt-3">
+    @if (orden.Estado == EstadoOrden.Calculada)
+    {
+        <a asp-controller="OrdenImportacion" asp-action="Cerrar" asp-route-id="@orden.Id" class="btn btn-dark">Cerrar orden</a>
+    }
+    <a asp-controller="OrdenImportacion" asp-action="Details" asp-route-id="@orden.Id" class="btn btn-secondary">Ver la orden</a>
+    <a asp-action="Index" class="btn btn-outline-secondary">Volver al cálculo</a>
+</div>

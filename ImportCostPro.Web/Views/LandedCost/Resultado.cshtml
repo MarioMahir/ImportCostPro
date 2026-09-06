@@ -1,0 +1,77 @@
+@model ImportCostPro.Core.Dtos.LandedCostCalculoDto
+@{
+    ViewData["Title"] = "Resultado del cálculo";
+    var ml = Model.MonedaLocal;
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+        <h1 class="mb-0">Resultado del landed cost</h1>
+        <p class="text-muted mb-0">
+            Orden #@Model.OrdenId · @Model.FechaOrden.ToString("dd/MM/yyyy") · @Model.Importador · @Model.Proveedor · moneda de la orden @Model.MonedaOrden
+        </p>
+    </div>
+    <span class="badge bg-warning text-dark fs-6">Vista previa · no guardado</span>
+</div>
+
+<div class="alert alert-secondary mt-3">
+    Los montos están expresados en <strong>@ml</strong>. Tasa de cambio usada para la orden: <strong>@Model.TasaCambioOrden.ToString("N4")</strong>.
+    ITBIS @Model.PorcentajeITBIS.ToString("N2") % · tasa de servicio aduanal @Model.PorcentajeTasaServicioAduanal.ToString("N2") %.
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-sm align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Producto</th>
+                <th class="text-end">Cantidad</th>
+                <th class="text-end">FOB original (@Model.MonedaOrden)</th>
+                <th class="text-end">FOB local</th>
+                <th class="text-end">Flete asignado</th>
+                <th class="text-end">Seguro asignado</th>
+                <th class="text-end">CIF</th>
+                <th class="text-end">Arancel</th>
+                <th class="text-end">Imp. selectivo</th>
+                <th class="text-end">Tasa serv. aduanal</th>
+                <th class="text-end">ITBIS</th>
+                <th class="text-end">Gastos locales</th>
+                <th class="text-end">Costo total importado</th>
+                <th class="text-end">Costo unitario</th>
+                <th class="text-end">Margen</th>
+                <th class="text-end">Precio sugerido</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.Detalles)
+            {
+                <tr>
+                    <td>@d.Producto</td>
+                    <td class="text-end">@d.Cantidad</td>
+                    <td class="text-end">@d.FOBOriginal.ToString("N2")</td>
+                    <td class="text-end">@d.FOBLocal.ToString("N2")</td>
+                    <td class="text-end">@d.FleteAsignado.ToString("N2")</td>
+                    <td class="text-end">@d.SeguroAsignado.ToString("N2")</td>
+                    <td class="text-end">@d.CIF.ToString("N2")</td>
+                    <td class="text-end">@d.Arancel.ToString("N2") <small class="text-muted">(@d.PorcentajeArancel.ToString("N2") %)</small></td>
+                    <td class="text-end">@d.ImpuestoSelectivo.ToString("N2")</td>
+                    <td class="text-end">@d.TasaServicioAduanal.ToString("N2")</td>
+                    <td class="text-end">@d.ITBIS.ToString("N2")</td>
+                    <td class="text-end">@d.GastosLocalesAsignados.ToString("N2")</td>
+                    <td class="text-end fw-semibold">@d.CostoTotalImportado.ToString("N2")</td>
+                    <td class="text-end fw-semibold">@d.CostoUnitarioImportado.ToString("N2")</td>
+                    <td class="text-end">@d.MargenDeseado.ToString("N2") %</td>
+                    <td class="text-end fw-semibold">@d.PrecioVentaSugerido.ToString("N2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<h2 class="h5 mt-4">Resumen general</h2>
+<partial name="_ResumenLandedCost" model="Model" />
+
+<form asp-action="Guardar" method="post" class="mt-3">
+    <input type="hidden" name="ordenId" value="@Model.OrdenId" />
+    <button type="submit" class="btn btn-success">Guardar cálculo oficial</button>
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+</form>
