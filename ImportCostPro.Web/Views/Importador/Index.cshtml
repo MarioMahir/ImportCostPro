@@ -1,0 +1,56 @@
+﻿@model List<ImportCostPro.Core.Entities.Importador>
+
+<h1>Importadores</h1>
+
+<a asp-action="Create"
+   class="btn btn-primary mb-3">
+    Nuevo Importador
+</a>
+
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>RNC</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.Nombre</td>
+                <td>@item.RNC</td>
+                <td>@item.Email</td>
+                <td>@item.Telefono</td>
+                <td>@item.Estado</td>
+
+                <td>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@item.Id"
+                       class="btn btn-warning">
+                        Editar
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@item.Id"
+                       class="btn btn-danger">
+                        Eliminar
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

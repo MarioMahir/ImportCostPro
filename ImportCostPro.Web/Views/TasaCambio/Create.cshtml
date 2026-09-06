@@ -1,0 +1,70 @@
+﻿@model ImportCostPro.Web.ViewModels.TasaCambioViewModel
+
+<h2>Registrar tasa de cambio</h2>
+
+<form asp-action="Create">
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger">
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="MonedaOrigenId"></label>
+
+        <select asp-for="MonedaOrigenId"
+                asp-items="Model.Monedas"
+                class="form-select">
+            <option value="">
+                Seleccione...
+            </option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="MonedaDestinoId"></label>
+
+        <select asp-for="MonedaDestinoId"
+                asp-items="Model.Monedas"
+                class="form-select">
+            <option value="">
+                Seleccione...
+            </option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ValorTasa"></label>
+        <input asp-for="ValorTasa" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FechaVigencia"></label>
+        <input asp-for="FechaVigencia"
+               type="date"
+               class="form-control" />
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Estado"
+               class="form-check-input" />
+
+        <label asp-for="Estado"
+               class="form-check-label">
+        </label>
+    </div>
+
+    <button type="submit"
+            class="btn btn-success">
+        Guardar
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Volver
+    </a>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,28 @@
+﻿@model ImportCostPro.Core.Entities.Importador
+
+<h1>Eliminar Importador</h1>
+
+<div class="alert alert-warning">
+
+    ¿Desea eliminar este importador?
+
+</div>
+
+<p>
+    <strong>@Model.Nombre</strong>
+</p>
+
+<form asp-action="DeleteConfirmed">
+
+    <input type="hidden" asp-for="Id" />
+
+    <button class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

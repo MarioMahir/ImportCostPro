@@ -1,0 +1,48 @@
+﻿@model ImportCostPro.Core.Entities.CategoriaArancelaria
+
+@{
+    ViewData["Title"] = "Eliminar Categoría";
+}
+
+<h2>Eliminar Categoría Arancelaria</h2>
+
+<div class="alert alert-warning">
+    ¿Está seguro que desea eliminar esta categoría arancelaria?
+</div>
+
+<dl class="row">
+
+    <dt class="col-sm-3">
+        Código
+    </dt>
+
+    <dd class="col-sm-9">
+        @Model.CodigoArancelario
+    </dd>
+
+    <dt class="col-sm-3">
+        Descripción
+    </dt>
+
+    <dd class="col-sm-9">
+        @Model.Descripcion
+    </dd>
+
+</dl>
+
+<form asp-action="DeleteConfirmed">
+
+    <input type="hidden"
+           asp-for="Id" />
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Cancelar
+    </a>
+
+    <button type="submit"
+            class="btn btn-danger">
+        Aceptar
+    </button>
+
+</form>

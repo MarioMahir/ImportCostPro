@@ -1,0 +1,78 @@
+﻿@model ImportCostPro.Core.Entities.CategoriaArancelaria
+
+@{
+    ViewData["Title"] = "Crear Categoría";
+}
+
+<h2>Crear Categoría Arancelaria</h2>
+
+<form asp-action="Create">
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="CodigoArancelario"></label>
+        <input asp-for="CodigoArancelario" class="form-control" />
+        <span asp-validation-for="CodigoArancelario"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Descripcion"></label>
+        <input asp-for="Descripcion" class="form-control" />
+        <span asp-validation-for="Descripcion"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PorcentajeArancel"></label>
+        <input asp-for="PorcentajeArancel" class="form-control" />
+        <span asp-validation-for="PorcentajeArancel"
+              class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="AplicaITBIS"
+               class="form-check-input" />
+        <label asp-for="AplicaITBIS"
+               class="form-check-label"></label>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="AplicaImpuestoSelectivo"
+               class="form-check-input" />
+        <label asp-for="AplicaImpuestoSelectivo"
+               class="form-check-label"></label>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PorcentajeImpuestoSelectivo"></label>
+        <input asp-for="PorcentajeImpuestoSelectivo"
+               class="form-control" />
+        <span asp-validation-for="PorcentajeImpuestoSelectivo"
+              class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Estado"
+               class="form-check-input" />
+        <label asp-for="Estado"
+               class="form-check-label"></label>
+    </div>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Volver atrás
+    </a>
+
+    <button type="submit" class="btn btn-primary">
+        Crear categoría arancelaria
+    </button>
+
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

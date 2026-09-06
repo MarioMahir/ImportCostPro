@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ImportCostPro.Core.Entities.Proveedor>
+
+@{
+    ViewData["Title"] = "Proveedores";
+}
+
+<h2>Proveedores</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Crear Proveedor
+    </a>
+</p>
+
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>País</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Moneda</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Pais?.Nombre</td>
+                <td>@item.Email</td>
+                <td>@item.Telefono</td>
+                <td>@item.Moneda?.Descripcion</td>
+                <td>@(item.Estado ? "Activo" : "Inactivo")</td>
+
+                <td>
+                    <a asp-action="Edit"
+                       asp-route-id="@item.Id"
+                       class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@item.Id"
+                       class="btn btn-danger btn-sm">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

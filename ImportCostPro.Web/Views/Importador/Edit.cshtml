@@ -1,0 +1,64 @@
+﻿@model ImportCostPro.Web.ViewModels.ImportadorViewModel
+
+<h1>Editar Importador</h1>
+
+<form asp-action="Edit" method="post">
+
+    <input type="hidden" asp-for="Id"/>
+
+    <div class="mb-3">
+        <label asp-for="Nombre"></label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="RNC"></label>
+        <input asp-for="RNC" class="form-control" />
+        <span asp-validation-for="RNC" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PaisId" class="form-label"></label>
+
+        <select asp-for="PaisId"
+                asp-items="Model.Paises"
+                class="form-select">
+            <option value="">Seleccione un país</option>
+        </select>
+
+        <span asp-validation-for="PaisId"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Telefono"></label>
+        <input asp-for="Telefono" class="form-control" />
+        <span asp-validation-for="Telefono" class="text-danger"></span>
+    </div>
+
+    <div class="form-check">
+        <input asp-for="Estado"
+               class="form-check-input" />
+
+        <label asp-for="Estado"
+               class="form-check-label"></label>
+    </div>
+
+    <button class="btn btn-success">
+        Guardar
+    </button>
+
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

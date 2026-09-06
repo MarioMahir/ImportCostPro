@@ -1,0 +1,32 @@
+﻿@model ImportCostPro.Core.Entities.TasaCambio
+
+<h3>
+    ¿Está seguro que desea eliminar esta tasa?
+</h3>
+
+<div>
+    <strong>
+        @Model.MonedaOrigen?.Descripcion
+        →
+        @Model.MonedaDestino?.Descripcion
+    </strong>
+</div>
+
+<br />
+
+<form asp-action="DeleteConfirmed">
+
+    <input type="hidden"
+           asp-for="Id" />
+
+    <button type="submit"
+            class="btn btn-danger">
+        Aceptar
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

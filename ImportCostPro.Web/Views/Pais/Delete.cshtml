@@ -1,0 +1,33 @@
+﻿@model ImportCostPro.Core.Entities.Pais
+
+<h1 class="mb-4 text-danger">
+    Eliminar País
+</h1>
+
+<div class="alert alert-warning">
+    ¿Seguro que deseas eliminar este país?
+</div>
+
+<div class="mb-3">
+    <strong>Nombre:</strong>
+    @Model.Nombre
+</div>
+
+<div class="mb-3">
+    <strong>Código ISO:</strong>
+    @Model.CodigoISO
+</div>
+
+<form asp-action="DeleteConfirmed">
+
+    <input type="hidden" asp-for="Id" />
+
+    <button type="submit" class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

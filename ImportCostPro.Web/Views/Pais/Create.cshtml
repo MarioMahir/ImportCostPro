@@ -1,0 +1,45 @@
+﻿@model ImportCostPro.Core.Entities.Pais
+
+<h1 class="mb-4">Crear País</h1>
+
+<form asp-action="Create">
+
+	<div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label"></label>
+
+        <input asp-for="Nombre" class="form-control" />
+
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CodigoISO" class="form-label"></label>
+
+        <input asp-for="CodigoISO" class="form-control" />
+
+        <span asp-validation-for="CodigoISO" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Estado" class="form-check-input" />
+
+        <label asp-for="Estado" class="form-check-label"></label>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Guardar
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Volver
+    </a>
+
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

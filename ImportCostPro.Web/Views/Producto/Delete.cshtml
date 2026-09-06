@@ -1,0 +1,34 @@
+﻿@model ImportCostPro.Core.Entities.Producto
+
+<h3>
+    ¿Está seguro que desea eliminar este producto?
+</h3>
+
+<hr />
+
+<dl class="row">
+
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Model.Nombre</dd>
+
+    <dt class="col-sm-3">Código</dt>
+    <dd class="col-sm-9">@Model.CodigoReferencia</dd>
+
+</dl>
+
+<form asp-action="DeleteConfirmed">
+
+    <input type="hidden"
+           asp-for="Id" />
+
+    <button type="submit"
+            class="btn btn-danger">
+        Aceptar
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

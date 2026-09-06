@@ -1,0 +1,53 @@
+﻿@model List<ImportCostPro.Core.Entities.Moneda>
+
+<h1 class="mb-4">Monedas</h1>
+
+<a asp-action="Create" class="btn btn-primary mb-3">
+    Nueva Moneda
+</a>
+
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+        <tr>
+            <th>Descripción</th>
+            <th>Símbolo</th>
+            <th>Código ISO</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var moneda in Model)
+        {
+            <tr>
+                <td>@moneda.Descripcion</td>
+                <td>@moneda.Simbolo</td>
+                <td>@moneda.CodigoISO</td>
+
+                <td>
+                    @(moneda.Estado ? "Activo" : "Inactivo")
+                </td>
+
+                <td>
+                    <a asp-action="Edit"
+                       asp-route-id="@moneda.Id"
+                       class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@moneda.Id"
+                       class="btn btn-danger btn-sm">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

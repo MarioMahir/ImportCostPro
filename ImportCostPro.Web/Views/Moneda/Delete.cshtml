@@ -1,0 +1,38 @@
+﻿@model ImportCostPro.Core.Entities.Moneda
+
+<h1 class="mb-4 text-danger">
+    Eliminar Moneda
+</h1>
+
+<div class="alert alert-warning">
+    ¿Seguro que deseas eliminar esta moneda?
+</div>
+
+<div class="mb-3">
+    <strong>Descripción:</strong>
+    @Model.Descripcion
+</div>
+
+<div class="mb-3">
+    <strong>Símbolo:</strong>
+    @Model.Simbolo
+</div>
+
+<div class="mb-3">
+    <strong>Código ISO:</strong>
+    @Model.CodigoISO
+</div>
+
+<form asp-action="DeleteConfirmed">
+
+    <input type="hidden" asp-for="Id" />
+
+    <button type="submit" class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<ImportCostPro.Core.Entities.CategoriaArancelaria>
+
+@{
+    ViewData["Title"] = "Categorías Arancelarias";
+}
+
+<h2>Categorías Arancelarias</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">
+    Crear categoría arancelaria
+</a>
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Descripción</th>
+            <th>% Arancel</th>
+            <th>ITBIS</th>
+            <th>Selectivo</th>
+            <th>% Selectivo</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CodigoArancelario</td>
+                <td>@item.Descripcion</td>
+                <td>@item.PorcentajeArancel</td>
+                <td>@(item.AplicaITBIS ? "Sí" : "No")</td>
+                <td>@(item.AplicaImpuestoSelectivo ? "Sí" : "No")</td>
+                <td>@item.PorcentajeImpuestoSelectivo</td>
+                <td>@(item.Estado ? "Activo" : "Inactivo")</td>
+
+                <td>
+                    <a asp-action="Edit"
+                       asp-route-id="@item.Id"
+                       class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@item.Id"
+                       class="btn btn-danger btn-sm">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
