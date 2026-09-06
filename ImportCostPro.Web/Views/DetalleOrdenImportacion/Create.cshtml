@@ -1,0 +1,62 @@
+@model ImportCostPro.Web.ViewModels.DetalleOrdenImportacionViewModel
+@{
+    ViewData["Title"] = "Agregar producto a la orden";
+}
+
+<h1>Agregar producto a la orden</h1>
+
+<form asp-action="Create" class="card p-3" style="max-width: 40rem;">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="OrdenImportacionId" class="form-label"></label>
+        <select asp-for="OrdenImportacionId" asp-items="Model.Ordenes" class="form-select">
+            <option value="">Seleccione una orden abierta</option>
+        </select>
+        <span asp-validation-for="OrdenImportacionId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ProductoId" class="form-label"></label>
+        <select asp-for="ProductoId" asp-items="Model.Productos" class="form-select">
+            <option value="">Seleccione un producto</option>
+        </select>
+        <span asp-validation-for="ProductoId" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="Cantidad" class="form-label"></label>
+            <input asp-for="Cantidad" class="form-control" />
+            <span asp-validation-for="Cantidad" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="PrecioUnitario" class="form-label"></label>
+            <input asp-for="PrecioUnitario" class="form-control" />
+            <span asp-validation-for="PrecioUnitario" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="MargenDeseado" class="form-label"></label>
+            <input asp-for="MargenDeseado" class="form-control" />
+            <span asp-validation-for="MargenDeseado" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div>
+        <button class="btn btn-success">Agregar producto</button>
+        @if (Model.OrdenImportacionId > 0)
+        {
+            <a asp-controller="OrdenImportacion" asp-action="Details" asp-route-id="@Model.OrdenImportacionId" class="btn btn-secondary">Volver atrás</a>
+        }
+        else
+        {
+            <a asp-action="Index" class="btn btn-secondary">Volver atrás</a>
+        }
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

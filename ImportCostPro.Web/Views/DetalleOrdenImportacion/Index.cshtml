@@ -1,0 +1,62 @@
+﻿@model List<ImportCostPro.Core.Entities.DetalleOrdenImportacion>
+
+<h1>Detalles de Orden</h1>
+
+<a asp-action="Create"
+   class="btn btn-primary mb-3">
+    Nuevo Detalle
+</a>
+
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <th>Orden</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Subtotal</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.OrdenImportacionId</td>
+
+                <td>@item.Producto?.Nombre</td>
+
+                <td>@item.Cantidad</td>
+
+                <td>@item.PrecioUnitario</td>
+
+                <td>
+                    @(item.Cantidad* item.PrecioUnitario)
+                </td>
+
+                <td>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@item.Id"
+                       class="btn btn-warning">
+                        Editar
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@item.Id"
+                       class="btn btn-danger">
+                        Eliminar
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

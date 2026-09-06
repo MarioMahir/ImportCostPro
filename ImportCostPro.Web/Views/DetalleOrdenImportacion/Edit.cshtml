@@ -1,0 +1,49 @@
+@model ImportCostPro.Web.ViewModels.DetalleOrdenImportacionViewModel
+@{
+    ViewData["Title"] = "Editar producto de la orden";
+}
+
+<h1>Editar producto de la orden #@Model.OrdenImportacionId</h1>
+
+<form asp-action="Edit" class="card p-3" style="max-width: 40rem;">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="OrdenImportacionId" />
+
+    <div class="mb-3">
+        <label asp-for="ProductoId" class="form-label"></label>
+        <select asp-for="ProductoId" asp-items="Model.Productos" class="form-select">
+            <option value="">Seleccione un producto</option>
+        </select>
+        <span asp-validation-for="ProductoId" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="Cantidad" class="form-label"></label>
+            <input asp-for="Cantidad" class="form-control" />
+            <span asp-validation-for="Cantidad" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="PrecioUnitario" class="form-label"></label>
+            <input asp-for="PrecioUnitario" class="form-control" />
+            <span asp-validation-for="PrecioUnitario" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="MargenDeseado" class="form-label"></label>
+            <input asp-for="MargenDeseado" class="form-control" />
+            <span asp-validation-for="MargenDeseado" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div>
+        <button class="btn btn-success">Guardar cambios</button>
+        <a asp-controller="OrdenImportacion" asp-action="Details" asp-route-id="@Model.OrdenImportacionId" class="btn btn-secondary">Volver atrás</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

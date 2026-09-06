@@ -1,0 +1,84 @@
+﻿@model ImportCostPro.Web.ViewModels.OrdenImportacionViewModel
+
+<h1>Crear Orden de Importación</h1>
+
+<form asp-action="Create">
+
+    <div class="mb-3">
+        <label asp-for="Fecha"></label>
+
+        <input asp-for="Fecha"
+               type="date"
+               class="form-control" />
+
+        <span asp-validation-for="Fecha"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ImportadorId"></label>
+
+        <select asp-for="ImportadorId"
+                asp-items="Model.Importadores"
+                class="form-select">
+
+            <option value="">
+                Seleccione un importador
+            </option>
+
+        </select>
+
+        <span asp-validation-for="ImportadorId"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+
+        <label asp-for="MonedaId"></label>
+
+        <select asp-for="MonedaId"
+                asp-items="Model.Monedas"
+                class="form-select">
+
+            <option value="">
+                Seleccione una moneda
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ProveedorId"></label>
+
+        <select asp-for="ProveedorId"
+                asp-items="Model.Proveedores"
+                class="form-select">
+
+            <option value="">
+                Seleccione un proveedor
+            </option>
+
+        </select>
+
+        <span asp-validation-for="ProveedorId"
+              class="text-danger"></span>
+    </div>
+
+    <button class="btn btn-success">
+        Guardar
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Volver
+    </a>
+
+</form>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

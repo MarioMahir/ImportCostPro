@@ -1,0 +1,32 @@
+@model ImportCostPro.Core.Entities.OrdenImportacion
+@{
+    ViewData["Title"] = "Cerrar orden";
+}
+
+<h1>Cerrar orden de importación #@Model.Id</h1>
+
+<div class="alert alert-warning" style="max-width: 44rem;">
+    ¿Está seguro que desea cerrar esta orden de importación? Una vez cerrada, no podrá modificar sus datos, productos, gastos ni resultado de cálculo.
+</div>
+
+<p>
+    <strong>Fecha:</strong> @Model.Fecha.ToString("dd/MM/yyyy") ·
+    <strong>Importador:</strong> @Model.Importador?.Nombre ·
+    <strong>Proveedor:</strong> @Model.Proveedor?.Nombre ·
+    <strong>Estado actual:</strong> @Model.Estado
+</p>
+
+@if (Model.ResultadoOficial != null)
+{
+    <p>
+        <strong>Costo total de importación oficial:</strong>
+        @Model.ResultadoOficial.CostoTotalImportacion.ToString("N2") @Model.ResultadoOficial.MonedaLocal?.CodigoISO
+        (calculado el @Model.ResultadoOficial.FechaCalculo.ToString("dd/MM/yyyy HH:mm"))
+    </p>
+}
+
+<form asp-action="CerrarConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn btn-dark">Aceptar</button>
+</form>

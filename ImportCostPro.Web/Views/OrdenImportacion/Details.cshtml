@@ -1,0 +1,184 @@
+@using ImportCostPro.Core.Enums
+@model ImportCostPro.Core.Entities.OrdenImportacion
+@{
+    ViewData["Title"] = $"Orden #{Model.Id}";
+    var abierta = Model.Estado == EstadoOrden.Abierta;
+    var badge = Model.Estado switch
+    {
+        EstadoOrden.Abierta => "bg-primary",
+        EstadoOrden.Calculada => "bg-success",
+        EstadoOrden.Cerrada => "bg-dark",
+        _ => "bg-secondary"
+    };
+    var moneda = Model.Moneda?.CodigoISO;
+    var fobTotal = Model.Detalles.Sum(d => d.Cantidad * d.PrecioUnitario);
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <div>
+        <h1 class="mb-0">Orden de importación #@Model.Id <span class="badge @badge fs-6 align-middle">@Model.Estado</span></h1>
+        <p class="text-muted mb-0">
+            @Model.Fecha.ToString("dd/MM/yyyy") · @Model.Importador?.Nombre · @Model.Proveedor?.Nombre · @moneda
+            @if (Model.FechaCierre.HasValue)
+            {
+                <text>· cerrada el @Model.FechaCierre.Value.ToString("dd/MM/yyyy HH:mm")</text>
+            }
+        </p>
+    </div>
+    <div>
+        @if (abierta)
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar orden</a>
+            <a asp-controller="LandedCost" asp-action="Index" class="btn btn-primary">Calcular landed cost</a>
+            <a asp-action="Cancelar" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Cancelar orden</a>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Eliminar</a>
+        }
+        else if (Model.Estado == EstadoOrden.Calculada)
+        {
+            <a asp-controller="LandedCost" asp-action="Oficial" asp-route-id="@Model.Id" class="btn btn-success">Ver cálculo oficial</a>
+            <a asp-action="Cerrar" asp-route-id="@Model.Id" class="btn btn-dark">Cerrar orden</a>
+            <a asp-action="Cancelar" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Cancelar orden</a>
+        }
+        else if (Model.Estado == EstadoOrden.Cerrada)
+        {
+            <a asp-controller="LandedCost" asp-action="Oficial" asp-route-id="@Model.Id" class="btn btn-success">Ver cálculo oficial</a>
+        }
+        <a asp-action="Index" class="btn btn-secondary">Volver</a>
+    </div>
+</div>
+
+@if (!abierta)
+{
+    <div class="alert alert-secondary">
+        Esta orden está en estado <strong>@Model.Estado</strong>: sus datos, productos y gastos ya no pueden modificarse.
+    </div>
+}
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h2 class="h5 mb-0">Productos de la orden</h2>
+            @if (abierta)
+            {
+                <a asp-controller="DetalleOrdenImportacion" asp-action="Create" asp-route-ordenId="@Model.Id" class="btn btn-sm btn-primary">Agregar producto</a>
+            }
+        </div>
+        <table class="table table-sm table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th class="text-end">Cantidad</th>
+                    <th class="text-end">Precio FOB (@moneda)</th>
+                    <th class="text-end">FOB producto</th>
+                    <th class="text-end">Margen</th>
+                    @if (abierta)
+                    {
+                        <th></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Detalles.Any())
+                {
+                    <tr><td colspan="6" class="text-muted">La orden no tiene productos.</td></tr>
+                }
+                @foreach (var d in Model.Detalles)
+                {
+                    <tr>
+                        <td>@d.Producto?.Nombre</td>
+                        <td class="text-end">@d.Cantidad</td>
+                        <td class="text-end">@d.PrecioUnitario.ToString("N2")</td>
+                        <td class="text-end">@((d.Cantidad * d.PrecioUnitario).ToString("N2"))</td>
+                        <td class="text-end">@d.MargenDeseado.ToString("N2") %</td>
+                        @if (abierta)
+                        {
+                            <td class="text-end">
+                                <a asp-controller="DetalleOrdenImportacion" asp-action="Edit" asp-route-id="@d.Id" class="btn btn-warning btn-sm">Editar</a>
+                                <a asp-controller="DetalleOrdenImportacion" asp-action="Delete" asp-route-id="@d.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+            @if (Model.Detalles.Any())
+            {
+                <tfoot>
+                    <tr class="fw-semibold">
+                        <td>FOB total</td>
+                        <td class="text-end">@Model.Detalles.Sum(d => d.Cantidad)</td>
+                        <td></td>
+                        <td class="text-end">@fobTotal.ToString("N2") @moneda</td>
+                        <td colspan="2"></td>
+                    </tr>
+                </tfoot>
+            }
+        </table>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h2 class="h5 mb-0">Gastos de importación</h2>
+            @if (abierta)
+            {
+                <a asp-controller="GastoImportacion" asp-action="Create" asp-route-ordenId="@Model.Id" class="btn btn-sm btn-primary">Registrar gasto</a>
+            }
+        </div>
+        <table class="table table-sm table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th class="text-end">Monto</th>
+                    <th>Distribución</th>
+                    <th>Fecha</th>
+                    @if (abierta)
+                    {
+                        <th></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Gastos.Any())
+                {
+                    <tr><td colspan="5" class="text-muted">La orden no tiene gastos.</td></tr>
+                }
+                @foreach (var g in Model.Gastos)
+                {
+                    <tr>
+                        <td>@g.TipoGasto</td>
+                        <td class="text-end">@g.Monto.ToString("N2") @g.Moneda?.CodigoISO</td>
+                        <td>@g.MetodoDistribucion</td>
+                        <td>@g.Fecha.ToString("dd/MM/yyyy")</td>
+                        @if (abierta)
+                        {
+                            <td class="text-end">
+                                <a asp-controller="GastoImportacion" asp-action="Edit" asp-route-id="@g.Id" class="btn btn-warning btn-sm">Editar</a>
+                                <a asp-controller="GastoImportacion" asp-action="Delete" asp-route-id="@g.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (Model.ResultadoOficial != null)
+{
+    var r = Model.ResultadoOficial;
+    <h2 class="h5 mt-4">Resultado oficial del landed cost</h2>
+    <div class="card p-3" style="max-width: 40rem;">
+        <table class="table table-sm mb-0">
+            <tbody>
+                <tr><th>Fecha del cálculo</th><td class="text-end">@r.FechaCalculo.ToString("dd/MM/yyyy HH:mm")</td></tr>
+                <tr><th>Moneda local</th><td class="text-end">@r.MonedaLocal?.CodigoISO</td></tr>
+                <tr><th>Tasa de cambio usada</th><td class="text-end">@r.TasaCambioOrden.ToString("N4")</td></tr>
+                <tr><th>FOB total local</th><td class="text-end">@r.FOBTotalLocal.ToString("N2")</td></tr>
+                <tr><th>CIF total</th><td class="text-end">@r.CIFTotal.ToString("N2")</td></tr>
+                <tr><th>Total impuestos (arancel, selectivo, tasa aduanal, ITBIS)</th><td class="text-end">@((r.TotalArancel + r.TotalImpuestoSelectivo + r.TotalTasaServicioAduanal + r.TotalITBIS).ToString("N2"))</td></tr>
+                <tr><th>Total gastos locales</th><td class="text-end">@r.TotalGastosLocales.ToString("N2")</td></tr>
+                <tr class="table-primary"><th>Costo total de importación</th><td class="text-end fw-bold">@r.CostoTotalImportacion.ToString("N2") @r.MonedaLocal?.CodigoISO</td></tr>
+            </tbody>
+        </table>
+        <a asp-controller="LandedCost" asp-action="Oficial" asp-route-id="@Model.Id" class="btn btn-outline-success btn-sm mt-2 align-self-start">Ver detalle por producto</a>
+    </div>
+}

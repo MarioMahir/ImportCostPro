@@ -1,0 +1,23 @@
+@model ImportCostPro.Core.Entities.OrdenImportacion
+@{
+    ViewData["Title"] = "Cancelar orden";
+}
+
+<h1>Cancelar orden de importación #@Model.Id</h1>
+
+<div class="alert alert-warning" style="max-width: 44rem;">
+    ¿Está seguro que desea cancelar esta orden? Una orden cancelada se conserva en el histórico, pero no podrá calcularse, cerrarse ni modificarse.
+</div>
+
+<p>
+    <strong>Fecha:</strong> @Model.Fecha.ToString("dd/MM/yyyy") ·
+    <strong>Importador:</strong> @Model.Importador?.Nombre ·
+    <strong>Proveedor:</strong> @Model.Proveedor?.Nombre ·
+    <strong>Estado actual:</strong> @Model.Estado
+</p>
+
+<form asp-action="CancelarConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Volver</a>
+    <button type="submit" class="btn btn-outline-danger">Aceptar</button>
+</form>

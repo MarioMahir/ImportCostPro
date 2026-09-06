@@ -1,0 +1,25 @@
+﻿@model ImportCostPro.Core.Entities.DetalleOrdenImportacion
+
+<h1>Eliminar Detalle</h1>
+
+<div class="alert alert-warning">
+
+    ¿Desea eliminar este detalle?
+
+</div>
+
+<form asp-action="DeleteConfirmed">
+
+    <input type="hidden"
+           asp-for="Id" />
+
+    <button class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

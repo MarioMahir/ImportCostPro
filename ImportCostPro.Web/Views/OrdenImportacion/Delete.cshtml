@@ -1,0 +1,23 @@
+@model ImportCostPro.Core.Entities.OrdenImportacion
+@{
+    ViewData["Title"] = "Eliminar orden";
+}
+
+<h1>Eliminar orden de importación #@Model.Id</h1>
+
+<div class="alert alert-warning" style="max-width: 44rem;">
+    ¿Está seguro que desea eliminar esta orden? Se eliminarán también sus @Model.Detalles.Count producto(s) y @Model.Gastos.Count gasto(s) registrados.
+</div>
+
+<p>
+    <strong>Fecha:</strong> @Model.Fecha.ToString("dd/MM/yyyy") ·
+    <strong>Importador:</strong> @Model.Importador?.Nombre ·
+    <strong>Proveedor:</strong> @Model.Proveedor?.Nombre ·
+    <strong>Estado:</strong> @Model.Estado
+</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn btn-danger">Aceptar</button>
+</form>
