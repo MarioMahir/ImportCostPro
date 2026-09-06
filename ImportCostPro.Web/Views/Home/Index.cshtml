@@ -1,0 +1,40 @@
+@{
+    ViewData["Title"] = "Inicio";
+    var modulos = new (string Titulo, string Descripcion, string Controlador)[]
+    {
+        ("Países", "Países de origen de proveedores, importadores y productos.", "Pais"),
+        ("Monedas", "Monedas del sistema y la moneda local en la que se expresa el landed cost.", "Moneda"),
+        ("Importadores", "Empresas importadoras con su RNC.", "Importador"),
+        ("Proveedores", "Proveedores con su país y moneda principal.", "Proveedor"),
+        ("Productos", "Catálogo con peso, dimensiones y categoría arancelaria.", "Producto"),
+        ("Categorías arancelarias", "Porcentajes de arancel, ITBIS e impuesto selectivo.", "CategoriaArancelaria"),
+        ("Tasas de cambio", "Tasas activas por par de monedas y fecha de vigencia.", "TasaCambio"),
+        ("Órdenes de importación", "Órdenes con sus productos, gastos, cálculo oficial y cierre.", "OrdenImportacion"),
+        ("Gastos de importación", "Flete, seguro y gastos locales con su método de distribución.", "GastoImportacion"),
+        ("Configuración de impuestos", "Porcentaje general de ITBIS y tasa de servicio aduanal.", "ConfiguracionImpuestos"),
+        ("Cálculo de landed cost", "Costo real de cada producto puesto en almacén local.", "LandedCost")
+    };
+}
+
+<div class="py-4">
+    <h1 class="display-6">ImportCost Pro</h1>
+    <p class="lead text-muted" style="max-width: 52rem;">
+        Registre órdenes de importación con varios productos y calcule el costo real final de cada uno:
+        valor FOB, flete, seguro, tasa de cambio, aranceles, impuesto selectivo, tasa de servicio aduanal,
+        ITBIS, gastos locales y margen de ganancia.
+    </p>
+</div>
+
+<div class="row g-3">
+    @foreach (var m in modulos)
+    {
+        <div class="col-md-6 col-lg-4">
+            <a asp-controller="@m.Controlador" asp-action="Index" class="card h-100 text-decoration-none text-body">
+                <div class="card-body">
+                    <h2 class="h6 card-title mb-1">@m.Titulo</h2>
+                    <p class="card-text small text-muted mb-0">@m.Descripcion</p>
+                </div>
+            </a>
+        </div>
+    }
+</div>
